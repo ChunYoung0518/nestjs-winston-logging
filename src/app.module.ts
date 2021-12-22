@@ -1,26 +1,10 @@
 import { Logger, Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import {
-  utilities as nestWinstonModuleUtilities,
-  WinstonModule,
-} from 'nest-winston';
-import * as winston from 'winston';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
-  imports: [
-    // WinstonModule.forRoot({
-    //   transports: [
-    //     new winston.transports.Console({
-    //       level: 'debug',
-    //       format: winston.format.combine(
-    //         winston.format.timestamp(),
-    //         winston.format.json(),
-    //       ),
-    //     }),
-    //   ],
-    // }),
-  ],
+  imports: [ConfigModule.forRoot()],
   controllers: [AppController],
   providers: [AppService, Logger],
 })
