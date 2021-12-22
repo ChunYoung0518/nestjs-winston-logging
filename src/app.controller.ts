@@ -1,13 +1,11 @@
-import {Controller, Get, Inject, LoggerService} from '@nestjs/common';
+import { Controller, Get, Logger } from '@nestjs/common';
 import { AppService } from './app.service';
-import {WINSTON_MODULE_NEST_PROVIDER, WINSTON_MODULE_PROVIDER} from 'nest-winston';
-import { Logger } from 'winston';
 
 @Controller()
 export class AppController {
   constructor(
     private readonly appService: AppService,
-    @Inject(WINSTON_MODULE_NEST_PROVIDER) private readonly winstonLogger: LoggerService,
+    private readonly winstonLogger: Logger,
   ) {}
 
   @Get()

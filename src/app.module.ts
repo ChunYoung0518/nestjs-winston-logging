@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Logger, Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import {
@@ -9,19 +9,19 @@ import * as winston from 'winston';
 
 @Module({
   imports: [
-    WinstonModule.forRoot({
-      transports: [
-        new winston.transports.Console({
-          level: 'debug',
-          format: winston.format.combine(
-            winston.format.timestamp(),
-            winston.format.json(),
-          ),
-        }),
-      ],
-    }),
+    // WinstonModule.forRoot({
+    //   transports: [
+    //     new winston.transports.Console({
+    //       level: 'debug',
+    //       format: winston.format.combine(
+    //         winston.format.timestamp(),
+    //         winston.format.json(),
+    //       ),
+    //     }),
+    //   ],
+    // }),
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, Logger],
 })
 export class AppModule {}
