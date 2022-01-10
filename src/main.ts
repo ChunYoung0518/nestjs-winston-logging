@@ -25,6 +25,14 @@ async function bootstrap() {
         winston.format.json(),
       ),
     });
+  } else if (env == 'dev') {
+    myTransport = new winston.transports.Console({
+      level: 'debug',
+      format: winston.format.combine(
+        winston.format.timestamp(),
+        winston.format.json(),
+      ),
+    });
   }
 
   const app = await NestFactory.create(AppModule, {
