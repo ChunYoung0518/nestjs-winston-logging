@@ -9,13 +9,22 @@ async function bootstrap() {
   const env = process.env.ENV;
   const port = parseInt(process.env.PORT, 10) || 3000;
 
+  const localLogFormat = winston.format.printf(
+    ({ level, message, timestamp, label }) => {
+      return `${timestamp} ${level} ${label}: ${message}`;
+    },
+  );
+
   let myTransport;
   if (env == 'local') {
     myTransport = new winston.transports.Console({
       level: 'debug',
       format: winston.format.combine(
-        winston.format.colorize(),
+        winston.format.timestamp(),
+        winston.format.colorize({ all: true }),
         winston.format.simple(),
+        winston.format.label({ label: 'later!' }),
+        localLogFormat,
       ),
     });
   } else if (env == 'stg') {
@@ -38,10 +47,12 @@ async function bootstrap() {
     });
   }
 
+  const winstonLogger = WinstonModule.createLogger({
+    transports: [myTransport],
+  });
+
   const app = await NestFactory.create(AppModule, {
-    logger: WinstonModule.createLogger({
-      transports: [myTransport],
-    }),
+    logger: winstonLogger,
   });
   const myRequest = createNamespace('tranceId namespace');
   app.use(function (req, res, next) {
@@ -50,6 +61,7 @@ async function bootstrap() {
       next();
     });
   });
+  winstonLogger.warn('something from main');
   await app.listen(3000);
 }
 bootstrap();
