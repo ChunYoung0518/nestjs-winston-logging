@@ -2,12 +2,13 @@ import { Controller, Get, Logger } from '@nestjs/common';
 import { AppService } from './app.service';
 import { myLogger } from './myLogger';
 import { getNamespace } from 'continuation-local-storage';
+import { UserIpInterceptor } from './user-ip.interceptor';
 
 @Controller()
 export class AppController {
   constructor(
     private readonly appService: AppService,
-    private readonly winstonLogger: Logger,
+    private readonly winstonLogger: Logger
   ) {}
 
   formatMessage(message): string {

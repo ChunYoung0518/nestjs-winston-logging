@@ -1,10 +1,14 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { getNamespace } from 'continuation-local-storage';
 import * as winston from 'winston';
+import { ClsService } from 'nestjs-cls';
 
 @Injectable()
 export class AppService {
-  constructor(private readonly winstonLogger: Logger) {}
+  constructor(
+    private readonly winstonLogger: Logger,
+    private readonly cls: ClsService,
+  ) {}
 
   formatMessage(message): string {
     const myRequest = getNamespace('tranceId namespace');
@@ -52,6 +56,7 @@ export class AppService {
   getHello(): string {
     // this.logger.info('my message', { reason: 'reason', promise: 'promise' });
     this.logger.log('debug', 'hi', 123, { a: 1, b: 'two' });
-    return 'Hello World!';
+    console.log(this.cls.get<string>('key'));
+    return `Hello World!`;
   }
 }
